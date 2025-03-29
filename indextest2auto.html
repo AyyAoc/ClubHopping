@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สำรวจชมรมในคณะ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body class="bg-gradient-to-br from-green-100 to-green-300 text-gray-900 min-h-screen flex flex-col items-center">
+  <div class="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-lg mt-10">
+    <h1 class="text-3xl font-extrabold text-center mb-6 text-green-700">สำรวจชมรมในคณะ</h1>
+    <div class="mb-6">
+      <label class="block text-lg font-semibold mb-2">เลือกจุดเริ่มต้น (ชมรม):</label>
+      <select id="startClubSelect" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition"></select>
+    </div>
+    <div class="mb-6">
+      <label class="block text-lg font-semibold mb-2">เลือกจุดหมาย (ชมรม):</label>
+      <select id="endClubSelect" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition"></select>
+    </div>
+    <button id="startButton" class="w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-3 rounded-lg text-lg font-bold transition transform active:scale-95 hover:shadow-md" onclick="startNavigation()">
+    เริ่มนำทาง
+    </button>
+  </div>
+  
+  <div id="map" class="w-full h-80 mt-6 rounded-xl shadow-lg max-w-4xl"></div>
+  <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
+  
+  <script>
+    // สร้างแผนที่ด้วย Leaflet
+    var map = L.map('map').setView([13.736717, 100.523186], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+    
+    var routeLayer;
+    var markers = [];
+    
+    // ฟังก์ชันคำนวณระยะทางด้วย Haversine Formula
+    function haversineDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3; // รัศมีโลก (เมตร)
+      const φ1 = lat1 * Math.PI / 180;
+      const φ2 = lat2 * Math.PI / 180;
+      const Δφ = (lat2 - lat1) * Math.PI / 180;
+      const Δλ = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+    
+    // nodes รวมทั้งชมรมและทางเดิน
+    var nodes = {
+      // ชมรม
+      "Chorus": { lat: 18.792121, lng: 98.971415 },
+      "Tennis": { lat: 18.791664, lng: 98.971399 },
+      "Basketball": { lat: 18.791293, lng: 98.971437 },
+      "Santanakan": { lat: 18.791542, lng: 98.972070 },
+      "Music": { lat: 18.790968, lng: 98.971222 },
+      "ReadingRoom": { lat: 18.790897, lng: 98.972166 },
+      "50Years": { lat: 18.790836, lng: 98.972751 },
+      "TurtleDome": { lat: 18.790415, lng: 98.972488 },
+      "CMSO": { lat: 18.790257, lng: 98.972928 },
+      "RB": { lat: 18.789988, lng: 98.972579 },
+      "RN": { lat: 18.789942, lng: 98.973100 },
+      "Football": { lat: 18.789886, lng: 98.971555 },
+      // ทางเดิน 
+      "Path1": { lat: 18.792085, lng: 98.971868 },
+      "Path2": { lat: 18.790585, lng: 98.971811 }
+    };
+    
+    // connections: กำหนดการเชื่อมต่อระหว่าง nodes
+    // โครงสร้างนี้จะเป็น "การบังคับ" ที่ผู้ใช้งานต้องเดินผ่านทางเดิน
+    // 1 ชมรมสามารถเชื่อมต่อกับทางเดินได้หลายทาง เพราะทุกชมรมต้องผ่านทางเดินทุกครั้งที่ไปชมรมต่อไป
+    var connections = {
+      "Chorus": ["Path1"],
+      "Tennis": ["Path1"],
+      "Basketball": ["Path2", "Path1"],
+      "Santanakan": ["Path2"],
+      "Music": ["Path2"],
+      "ReadingRoom": ["Path2"],
+      "50Years": ["Path2"],
+      "TurtleDome": ["Path2"],
+      "CMSO": ["Path2"],
+      "RB": ["Path2"],
+      "RN": ["Path2"],
+      "Football": ["Path2"],
+      // ทางเดิน
+      "Path1": ["Chorus", "Tennis", "Path2","Santanakan"],
+      "Path2": ["Path1", "Basketball", "Music", "ReadingRoom", "50Years", "TurtleDome", "CMSO", "RB", "RN", "Football"]
+    };
+    
+   
+    function generateGraph(connections, nodes) {
+      let graph = {};
+      for (let node in connections) {
+        if (!graph[node]) graph[node] = {};
+        connections[node].forEach(neighbor => {
+
+          if (nodes[neighbor]) {
+            let distance = haversineDistance(
+              nodes[node].lat, nodes[node].lng,
+              nodes[neighbor].lat, nodes[neighbor].lng
+            );
+            graph[node][neighbor] = distance;
+          }
+        });
+      }
+      return graph;
+    }
+    
+  
+    var graph = generateGraph(connections, nodes);
+   
+    console.log("Graph:", graph);
+    
+    /* ===== อัลกอริธึม Dijkstra ===== */
+    function dijkstra(start, end) {
+      let distances = {};
+      let previous = {};
+      let unvisited = new Set(Object.keys(graph));
+    
+
+      for (let node of unvisited) {
+        distances[node] = Infinity;
+      }
+      distances[start] = 0;
+    
+      while (unvisited.size > 0) {
+ 
+        let current = Array.from(unvisited).reduce((minNode, node) =>
+          distances[node] < distances[minNode] ? node : minNode
+        );
+        unvisited.delete(current);
+    
+        if (current === end) break;
+    
+        for (let neighbor in (graph[current] || {})) {
+          let alt = distances[current] + graph[current][neighbor];
+          if (alt < distances[neighbor]) {
+            distances[neighbor] = alt;
+            previous[neighbor] = current;
+          }
+        }
+      }
+    
+     
+      let path = [];
+      let step = end;
+      while (step) {
+        path.unshift(step);
+        step = previous[step];
+      }
+      return path;
+    }
+    
+    function clearRoute() {
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+      }
+      markers.forEach(marker => map.removeLayer(marker));
+      markers = [];
+      document.getElementById("pathImages").innerHTML = "";
+    }
+    
+    function displayPathImages(path) {
+      let pathImagesDiv = document.getElementById("pathImages");
+      pathImagesDiv.innerHTML = "";
+      for (let i = 0; i < path.length - 1; i++) {
+        let imgPath = `images/${path[i]}_${path[i+1]}.jpg`;
+        let imgElement = document.createElement("img");
+        imgElement.src = imgPath;
+        imgElement.alt = `เส้นทางจาก ${path[i]} ไป ${path[i+1]}`;
+        imgElement.className = "w-32 h-20 object-cover rounded-lg shadow-md";
+        pathImagesDiv.appendChild(imgElement);
+      }
+    }
+    
+    function startNavigation() {
+      clearRoute();
+      var start = document.getElementById("startClubSelect").value;
+      var end = document.getElementById("endClubSelect").value;
+      if (!start || !end || start === end) return;
+    
+      let path = dijkstra(start, end);
+      console.log("Path:", path);
+    
+    
+      let latlngs = path.map(node => [nodes[node].lat, nodes[node].lng]);
+    
+      routeLayer = L.polyline(latlngs, { color: 'blue' }).addTo(map);
+    
+      path.forEach((node, index) => {
+        let markerColor = index === 0 ? 'green' : index === path.length - 1 ? 'red' : 'blue';
+        let marker = L.circleMarker([nodes[node].lat, nodes[node].lng], {
+          color: markerColor,
+          radius: 8,
+          fillOpacity: 1
+        }).addTo(map)
+        .bindPopup(index === 0 ? "จุดเริ่มต้น: " + node : index === path.length - 1 ? "จุดหมาย: " + node : "ผ่าน: " + node)
+        .openPopup();
+        markers.push(marker);
+      });
+    
+      displayPathImages(path);
+    }
+    
+    function populateSelectOptions() {
+      var startSelect = document.getElementById("startClubSelect");
+      var endSelect = document.getElementById("endClubSelect");
+      for (let node in nodes) {
+        if (!node.startsWith("Path")) {
+          startSelect.innerHTML += `<option value="${node}">${node}</option>`;
+          endSelect.innerHTML += `<option value="${node}">${node}</option>`;
+        }
+      }
+    }
+    populateSelectOptions();
+  </script>
+</body>
+</html>

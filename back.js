@@ -108,7 +108,7 @@ function dijkstra(start, end) {
 
   let distances = {};
   let previous = {};
-  let queue = new MinPriorityQueue(({ priority }) => priority); // ✅ เพิ่ม callback function
+  let queue = new MinPriorityQueue(({ priority }) => priority);
 
   for (let node in graph) {
     distances[node] = Infinity;

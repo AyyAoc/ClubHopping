@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สำรวจชมรมในคณะ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff89bf 0%, #fec3df 25%, #ffeea8 50%, #a0f3ed 75%, #72f0ec 100%);
+      background-size: 300% 300%;
+      animation: gradientAnimation 10s infinite alternate;
+      font-family: "Kodchasan", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+    @keyframes gradientAnimation {
+     0% { background-position: 0% 50%; }
+     50% { background-position: 100% 50%; }
+     100% { background-position: 0% 50%; }
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      color: #ff89bf;
+      text-shadow: 2px 2px 8px #fec3df;
+    }
+    button {
+      border-radius: 10px;
+      max-width: 400px;
+
+    }
+    select{
+      height: auto ;
+      max-width: 400px;
+      border-radius: 5px;
+      appearance: none;
+      background:url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) 
+      no-repeat right 10px center;
+      background-size: 20px;
+    }
+    #map {
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    select:focus , select:valid {
+      font-size: 16px;
+      text-align-last: center;
+      margin-top: 10px;
+    }
+   
+  
+    
+  </style>
+</head>
+<body class="flex flex-col items-center min-h-screen">
+  <div class="container mx-auto max-w-lg mt-10 text-center ">
+    <h1 class="text-4xl font-bold mb-6">สำรวจชมรมในคณะ</h1>
+    <div class="mb-4">
+      <label class="block text-lg font-semibold text-pink-700">เลือกจุดเริ่มต้น (ชมรม):</label>
+      <select id="startClubSelect" class="w-full p-3 bg-pink-100 border border-pink-300 shadow-md shadow-pink-500/50"></select>
+    </div>
+    <div class="mb-4">
+      <label class="block text-lg font-semibold text-purple-700">เลือกจุดหมาย (ชมรม):</label>
+      <select id="endClubSelect" class="w-full p-3 bg-purple-100 border border-purple-300 shadow-md shadow-indigo-500/100"></select>
+    </div>
+    <button id="startButton" class="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3 text-lg font-bold shadow-md hover:scale-105 transition-transform" onclick="startNavigation()">
+      เริ่มนำทาง 🍭
+    </button>
+  </div>
+  
+  <div id="map" class="w-full h-80 mt-6 max-w-4xl shadow-lg"></div>
+  <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
+  
+  <script>
+    
+    var map = L.map('map').setView([13.736717, 100.523186], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+    
+    var routeLayer;
+    var markers = [];
+    
+
+    let nodes = {};
+    let connections = {};
+    let clubNames = {};
+    let pathNames = {};
+
+    async function fetchData() {
+      const response = await fetch('/api/data'); 
+      const data = await response.json();
+      nodes = data.nodes;
+      connections = data.connections;
+      clubNames = data.clubNames;
+      pathNames = data.pathNames;
+      populateSelectOptions();
+    }
+
+    function clearRoute() {
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+      }
+      markers.forEach(marker => map.removeLayer(marker));
+      markers = [];
+      document.getElementById("pathImages").innerHTML = "";
+    }
+
+    function displayPathImages(path) {
+      let pathImagesDiv = document.getElementById("pathImages");
+      pathImagesDiv.innerHTML = "";
+      for (let i = 0; i < path.length - 1; i++) {
+        let imgPath = `images/${path[i]}_${path[i+1]}.jpg`;
+        let imgElement = document.createElement("img");
+        imgElement.src = imgPath;
+        imgElement.alt = `เส้นทางจาก ${path[i]} ไป ${path[i+1]}`;
+        imgElement.className = "w-32 h-20 object-cover rounded-lg shadow-md";
+        pathImagesDiv.appendChild(imgElement);
+      }
+    }
+
+    async function startNavigation() {
+      clearRoute();
+      const start = document.getElementById("startClubSelect").value;
+      const end = document.getElementById("endClubSelect").value;
+      if (!start || !end || start === end) return;
+
+      const response = await fetch('/api/path', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ start, end })
+      });
+      const { path } = await response.json();
+
+      console.log("Path:", path);
+
+      let latlngs = path.map(node => [nodes[node].lat, nodes[node].lng]);
+
+      routeLayer = L.polyline(latlngs, { color: 'blue' }).addTo(map);
+
+      path.forEach((node, index) => {
+        let markerColor = index === 0 ? 'green' : index === path.length - 1 ? 'red' : 'blue';
+        let marker = L.circleMarker([nodes[node].lat, nodes[node].lng], {
+          color: markerColor,
+          radius: 8,
+          fillOpacity: 1
+        }).addTo(map)
+        .bindPopup(index === 0 ? "จุดเริ่มต้น: " + clubNames[node] : index === path.length - 1 ? "จุดหมาย: " + clubNames[node] : "ผ่าน: " + pathNames[node])
+        .openPopup();
+        markers.push(marker);
+      });
+
+      displayPathImages(path);
+    }
+
+    function populateSelectOptions() {
+      var startSelect = document.getElementById("startClubSelect");
+      var endSelect = document.getElementById("endClubSelect");
+      for (let node in nodes) {
+        if (!node.startsWith("Path") && clubNames[node]) {
+          startSelect.innerHTML += `<option value="${node}">${clubNames[node]}</option>`;
+          endSelect.innerHTML += `<option  value="${node}">${clubNames[node]}</option>`;
+        }
+      }
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>

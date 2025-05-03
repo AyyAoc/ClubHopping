@@ -96,6 +96,7 @@
     let connections = {};
     let clubNames = {};
     let pathNames = {};
+    let nodeFloors = {};
 
     async function fetchData() {
       const response = await fetch('/api/data'); 
@@ -104,6 +105,7 @@
       connections = data.connections;
       clubNames = data.clubNames;
       pathNames = data.pathNames;
+      nodeFloors = data.nodeFloors;
       populateSelectOptions();
     }
 
@@ -168,8 +170,9 @@
       var endSelect = document.getElementById("endClubSelect");
       for (let node in nodes) {
         if (!node.startsWith("Path") && clubNames[node]) {
-          startSelect.innerHTML += `<option value="${node}">${clubNames[node]}</option>`;
-          endSelect.innerHTML += `<option  value="${node}">${clubNames[node]}</option>`;
+          const floorText = nodeFloors[node] ? ` (ชั้น ${Math.floor(nodeFloors[node])})` : '';
+          startSelect.innerHTML += `<option value="${node}">${clubNames[node]}${floorText}</option>`;
+          endSelect.innerHTML += `<option value="${node}">${clubNames[node]}${floorText}</option>`;
         }
       }
     }

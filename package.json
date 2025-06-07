@@ -1,4 +1,10 @@
 {
+  "name": "clubhopping",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node back.js",
+    "dev": "nodemon back.js"
+  },
   "dependencies": {
     "@datastructures-js/priority-queue": "^6.3.2",
     "express": "^5.1.0",

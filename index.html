@@ -58,35 +58,347 @@
       margin-top: 10px;
     }
    
-  
+    /* Sponsor section styles */
+    .sponsors-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 236, 249, 0.9) 100%);
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(255, 137, 191, 0.3);
+      text-align: center;
+      border: 3px solid rgba(255, 205, 230, 0.6);
+    }
     
+    .sponsors-title {
+      font-size: 1.8rem;
+      color: #ff66a3;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 3px rgba(255, 196, 232, 0.8);
+    }
+    
+    .sponsors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      justify-items: center;
+      align-items: center;
+    }
+    
+    .sponsor-item {
+      background: white;
+      border-radius: 15px;
+      padding: 0.8rem;
+      width: 100%;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease; 
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .sponsor-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ff89bf, #ffeea8, #a0f3ed);
+      border-radius: 15px 15px 0 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .sponsor-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(255, 137, 191, 0.4);
+    }
+    
+    .sponsor-item:hover::before {
+      opacity: 1;
+    }
+    
+    .sponsor-logo {
+      max-width: 100%;
+      max-height: 80px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    
+    .sponsor-item:hover .sponsor-logo {
+      transform: scale(1.05);
+    }
+    
+    @media (max-width: 768px) {
+      .sponsors-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+      }
+      
+      .sponsor-item {
+        height: 80px;
+      }
+      
+      .sponsor-logo {
+        max-height: 60px;
+      }
+    }
+    
+    /* Sponsor frame styles */
+    .sponsors-frame {
+      max-width: fit-content;
+      width: auto;
+      margin: 1rem auto 2rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 25px;
+      box-shadow: 0 8px 30px rgba(255, 137, 191, 0.4);
+      border: 3px solid rgba(255, 205, 230, 0.6);
+    }
+    
+    .sponsors-header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .sponsors-title {
+      font-size: 1.8rem;
+      color: #ff66a3;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(255, 196, 232, 0.8);
+      display: inline-block;
+      padding: 0.5rem 2rem;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50px;
+      border: 2px solid rgba(255, 205, 230, 0.6);
+    }
+    
+    .sponsors-container {
+      display: flex;
+      flex-direction: row;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    
+    .sponsors-left, .sponsors-right {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      width: 180px;
+      flex-shrink: 0;
+    }
+    
+    .sponsors-bottom {
+      margin-top: 1.5rem;
+      margin-bottom: 0;
+    }
+    
+    .sponsor-item {
+      background: white;
+      border-radius: 15px;
+      padding: 1rem;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease; 
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .sponsor-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ff89bf, #ffeea8, #a0f3ed);
+      border-radius: 15px 15px 0 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .sponsor-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(255, 137, 191, 0.4);
+    }
+    
+    .sponsor-item:hover::before {
+      opacity: 1;
+    }
+    
+    .sponsor-logo {
+      max-width: 100%;
+      max-height: 60px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+    
+    .sponsor-item:hover .sponsor-logo {
+      transform: scale(1.05);
+    }
+    
+    .main-content {
+      margin: 0 1.5rem;
+      width: 100%;
+      max-width: 800px;
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    
+    /* Tablet layout - same as desktop */
+    @media (max-width: 992px) and (min-width: 769px) {
+      .sponsors-frame {
+        padding: 1.5rem;
+      }
+      .sponsors-left, .sponsors-right {
+        width: 150px;
+      }
+      .sponsor-item {
+        height: 80px;
+      }
+      .main-content {
+        margin: 0 1rem;
+      }
+    }
+    
+    /* Mobile layout */
+    @media (max-width: 768px) {
+      .sponsors-frame {
+        padding: 1.2rem;
+        width: auto;
+        max-width: 95%;
+      }
+      .sponsors-container {
+        flex-direction: column;
+      }
+      .sponsors-left, .sponsors-right {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+        gap: 1rem;
+      }
+      .sponsors-left {
+        margin-bottom: 1rem;
+      }
+      .sponsor-item {
+        height: 70px;
+      }
+      .sponsor-logo {
+        max-height: 50px;
+      }
+      .main-content {
+        margin: 1.5rem 0;
+        max-width: none;
+        order: 2;
+      }
+      #map {
+        height: 350px !important;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .sponsors-left, .sponsors-right {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+      }
+      .sponsors-left {
+        margin-bottom: 0.8rem;
+      }
+      .sponsor-item {
+        height: 65px;
+      }
+      .main-content {
+        margin: 1rem 0;
+      }
+    }
   </style>
 </head>
 <body class="flex flex-col items-center min-h-screen">
-  <div class="container mx-auto max-w-lg mt-10 text-center ">
-    <h1 class="text-4xl font-bold mb-6">สำรวจชมรมในคณะ</h1>
-    <div class="mb-4">
-      <label class="block text-lg font-semibold text-pink-700">เลือกจุดเริ่มต้น (ชมรม):</label>
-      <select id="startClubSelect" class="w-full p-3 bg-pink-100 border border-pink-300 shadow-md shadow-pink-500/50"></select>
-    </div>
-    <div class="mb-4">
-      <label class="block text-lg font-semibold text-purple-700">เลือกจุดหมาย (ชมรม):</label>
-      <select id="endClubSelect" class="w-full p-3 bg-purple-100 border border-purple-300 shadow-md shadow-indigo-500/100"></select>
-    </div>
-    <button id="startButton" class="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3 text-lg font-bold shadow-md hover:scale-105 transition-transform" onclick="startNavigation()">
-      เริ่มนำทาง 🍭
-    </button>
-    <a href="https://docs.google.com/spreadsheets/d/1sQxwrLz00rlyefmu0FZnNhqYv0bJvrP0yUk-BcQKycU/edit?usp=sharing" target="_blank" class="w-full block mt-4 bg-gradient-to-r from-purple-500 to-pink-400 text-white py-3 text-lg font-bold rounded-lg shadow-md hover:scale-105 transition-transform flex items-center justify-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-      </svg>
-      <span>ลำดับชมรม</span>
-    </a>
 
+  <!-- Sponsors Frame wrapping all content -->
+  <div class="sponsors-frame mx-4">
+    <div class="sponsors-header">
+      <h2 class="sponsors-title">ได้รับการสนับสนุนโดย</h2>
+    </div>
+    
+    <!-- Sponsors Container with Left and Right Columns -->
+    <div class="sponsors-container">
+      <!-- Left Side Sponsors -->
+      <div class="sponsors-left">
+        <div class="sponsor-item">
+          <img src="sponsor/IMG_8975.PNG" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="sponsor/IMG_9395.JPG" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="sponsor/IMG_9494.JPG" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="sponsor/New Logo MFC.PNG.png" alt="MFC Logo" class="sponsor-logo">
+        </div>
+      </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container mx-auto max-w-lg mt-2 text-center">
+        <h1 class="text-4xl font-bold mb-6">สำรวจชมรมในคณะ</h1>
+        <div class="mb-4">
+          <label class="block text-lg font-semibold text-pink-700">เลือกจุดเริ่มต้น (ชมรม):</label>
+          <select id="startClubSelect" class="w-full p-3 bg-pink-100 border border-pink-300 shadow-md shadow-pink-500/50"></select>
+        </div>
+        <div class="mb-4">
+          <label class="block text-lg font-semibold text-purple-700">เลือกจุดหมาย (ชมรม):</label>
+          <select id="endClubSelect" class="w-full p-3 bg-purple-100 border border-purple-300 shadow-md shadow-indigo-500/100"></select>
+        </div>
+        <button id="startButton" class="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3 text-lg font-bold shadow-md hover:scale-105 transition-transform" onclick="startNavigation()">
+          เริ่มนำทาง 🍭
+        </button>
+        <a href="https://docs.google.com/spreadsheets/d/1sQxwrLz00rlyefmu0FZnNhqYv0bJvrP0yUk-BcQKycU/edit?usp=sharing" target="_blank" class="w-full block mt-4 bg-gradient-to-r from-purple-500 to-pink-400 text-white py-3 text-lg font-bold rounded-lg shadow-md hover:scale-105 transition-transform flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span>ลำดับชมรม</span>
+        </a>
+      </div>
+      
+      <div id="map" class="w-full h-96 mt-6 max-w-full shadow-lg mx-auto"></div>
+      <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
+    </div>
+      
+      <!-- Right Side Sponsors -->
+      <div class="sponsors-right">
+        <div class="sponsor-item">
+          <img src="sponsor/Pocari Logo-BlueBG_180122(EN).png" alt="Pocari Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="sponsor/a07557e716e8cd6490bc4ff03aa9da10.jpeg" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="sponsor/images.png" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="sponsor/logojackal_01.webp" alt="Jackal Logo" class="sponsor-logo">
+        </div>
+      </div>
+    </div>
   </div>
-  
-  <div id="map" class="w-full h-80 mt-6 max-w-4xl shadow-lg"></div>
-  <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
   
   <script>
     

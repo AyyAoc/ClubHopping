@@ -187,6 +187,12 @@
       align-items: flex-start;
     }
     
+    .main-content-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    
     .sponsors-left, .sponsors-right {
       display: grid;
       grid-template-columns: 1fr;
@@ -208,6 +214,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    
+    .sponsors-container-width {
+      width: 100%;
+      max-width: var(--sponsors-container-width);
+      display: flex;
+      flex-direction: column;
       transition: all 0.3s ease; 
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
@@ -248,7 +261,7 @@
     }
     
     .main-content {
-      margin: 0 1.5rem;
+      margin: 0 0rem;
       width: 100%;
       max-width: 800px;
       flex-grow: 1;
@@ -273,7 +286,7 @@
         height: 80px;
       }
       .main-content {
-        margin: 0 1rem;
+        margin: 0 0rem;
       }
     }
     
@@ -335,10 +348,6 @@
   <div class="sponsors-frame mx-4">
     <div class="sponsors-header">
       <h2 class="sponsors-title">ได้รับการสนับสนุนโดย</h2>
-      <!-- Debug info for image paths -->
-      <div class="debug-info" style="font-size: 12px; color: #666; margin-top: 5px;">
-        Path: /sponsor/ (absolute path from root)
-      </div>
     </div>
     
     <!-- Sponsors Container with Left and Right Columns -->
@@ -346,59 +355,63 @@
       <!-- Left Side Sponsors -->
       <div class="sponsors-left">
         <div class="sponsor-item">
-          <img src="/sponsor/IMG_8975.PNG" alt="Sponsor Logo" class="sponsor-logo">
+          <img src="public/sponsor/IMG_8975.PNG" alt="Sponsor Logo" class="sponsor-logo">
         </div>
         <div class="sponsor-item">
-          <img src="/sponsor/IMG_9395.JPG" alt="Sponsor Logo" class="sponsor-logo">
+          <img src="public/sponsor/IMG_9395.JPG" alt="Sponsor Logo" class="sponsor-logo">
         </div>
         <div class="sponsor-item">
-          <img src="/sponsor/IMG_9494.JPG" alt="Sponsor Logo" class="sponsor-logo">
+          <img src="public/sponsor/IMG_9494.JPG" alt="Sponsor Logo" class="sponsor-logo">
         </div>
         <div class="sponsor-item">
-          <img src="/sponsor/New Logo MFC.PNG.png" alt="MFC Logo" class="sponsor-logo">
+          <img src="public/sponsor/New Logo MFC.PNG.png" alt="MFC Logo" class="sponsor-logo">
         </div>
       </div>
     
-    <!-- Main Content -->
-    <div class="main-content">
-      <div class="container mx-auto max-w-lg mt-2 text-center">
-        <h1 class="text-4xl font-bold mb-6">สำรวจชมรมในคณะ</h1>
-        <div class="mb-4">
-          <label class="block text-lg font-semibold text-pink-700">เลือกจุดเริ่มต้น (ชมรม):</label>
-          <select id="startClubSelect" class="w-full p-3 bg-pink-100 border border-pink-300 shadow-md shadow-pink-500/50"></select>
+    <!-- Main Content and Map Container -->
+    <div class="main-content-container">
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="container mx-auto max-w-lg mt-2 text-center">
+          <h1 class="text-4xl font-bold mb-6">สำรวจชมรมในคณะ</h1>
+          <div class="mb-4">
+            <label class="block text-lg font-semibold text-pink-700">เลือกจุดเริ่มต้น (ชมรม):</label>
+            <select id="startClubSelect" class="w-full p-3 bg-pink-100 border border-pink-300 shadow-md shadow-pink-500/50"></select>
+          </div>
+          <div class="mb-4">
+            <label class="block text-lg font-semibold text-purple-700">เลือกจุดหมาย (ชมรม):</label>
+            <select id="endClubSelect" class="w-full p-3 bg-purple-100 border border-purple-300 shadow-md shadow-indigo-500/100"></select>
+          </div>
+          <button id="startButton" class="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3 text-lg font-bold shadow-md hover:scale-105 transition-transform" onclick="startNavigation()">
+            เริ่มนำทาง 🍭
+          </button>
+          <a href="https://docs.google.com/spreadsheets/d/1sQxwrLz00rlyefmu0FZnNhqYv0bJvrP0yUk-BcQKycU/edit?usp=sharing" target="_blank" class="w-full block mt-4 bg-gradient-to-r from-purple-500 to-pink-400 text-white py-3 text-lg font-bold rounded-lg shadow-md hover:scale-105 transition-transform flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+            <span>ลำดับชมรม</span>
+          </a>
         </div>
-        <div class="mb-4">
-          <label class="block text-lg font-semibold text-purple-700">เลือกจุดหมาย (ชมรม):</label>
-          <select id="endClubSelect" class="w-full p-3 bg-purple-100 border border-purple-300 shadow-md shadow-indigo-500/100"></select>
-        </div>
-        <button id="startButton" class="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3 text-lg font-bold shadow-md hover:scale-105 transition-transform" onclick="startNavigation()">
-          เริ่มนำทาง 🍭
-        </button>
-        <a href="https://docs.google.com/spreadsheets/d/1sQxwrLz00rlyefmu0FZnNhqYv0bJvrP0yUk-BcQKycU/edit?usp=sharing" target="_blank" class="w-full block mt-4 bg-gradient-to-r from-purple-500 to-pink-400 text-white py-3 text-lg font-bold rounded-lg shadow-md hover:scale-105 transition-transform flex items-center justify-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-          </svg>
-          <span>ลำดับชมรม</span>
-        </a>
       </div>
       
-      <div id="map" class="w-full h-96 mt-6 max-w-full shadow-lg mx-auto"></div>
+      <!-- Map and Path Images -->
+      <div id="map" class="w-full h-96 mt-6 shadow-lg"></div>
       <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
     </div>
       
       <!-- Right Side Sponsors -->
       <div class="sponsors-right">
         <div class="sponsor-item">
-          <img src="/sponsor/Pocari Logo-BlueBG_180122(EN).png" alt="Pocari Logo" class="sponsor-logo">
+          <img src="public/sponsor/Pocari Logo-BlueBG_180122(EN).png" alt="Pocari Logo" class="sponsor-logo">
         </div>
         <div class="sponsor-item">
-          <img src="/sponsor/a07557e716e8cd6490bc4ff03aa9da10.jpeg" alt="Sponsor Logo" class="sponsor-logo">
+          <img src="public/sponsor/a07557e716e8cd6490bc4ff03aa9da10.jpeg" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">  
+          <img src="public/sponsor/images.png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
         <div class="sponsor-item">
-          <img src="/sponsor/images.png" alt="Sponsor Logo" class="sponsor-logo">
-        </div>
-        <div class="sponsor-item">
-          <img src="/sponsor/logojackal_01.webp" alt="Jackal Logo" class="sponsor-logo">
+          <img src="public/sponsor/logojackal_01.webp" alt="Jackal Logo" class="sponsor-logo">
         </div>
       </div>
     </div>

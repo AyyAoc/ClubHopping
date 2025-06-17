@@ -2,10 +2,13 @@
     "version": 2,
     "builds": [
       { "src": "back.js", "use": "@vercel/node" },
-      { "src": "*.html", "use": "@vercel/static" }
+      { "src": "*.html", "use": "@vercel/static" },
+      { "src": "public/**", "use": "@vercel/static" }
     ],
     "routes": [
       { "src": "/api/(.*)", "dest": "back.js" },
+      { "src": "/sponsor-image/(.*)", "dest": "back.js" },
+      { "src": "/sponsor-images/(.*)", "dest": "/public/$1" },
       { "src": "/(.*)", "dest": "/$1" }
     ]
   }

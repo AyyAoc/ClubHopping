@@ -304,21 +304,20 @@ app.get('/api/data', (req, res) => {
   res.json({ nodes, connections, clubNames, pathNames, nodeFloors });
 });
 
-// API endpoint to get sponsor images
+
 app.get('/api/sponsors', (req, res) => {
-  // Using Google Drive direct links that are known to work
   const leftSponsors = [
-    'https://drive.google.com/uc?export=view&id=11Y_OAqpAJA4AZqLg8cgtKc5c1gbCik_S',
-    'https://drive.google.com/uc?export=view&id=1OOMffa2bDeChspZbOehbUT3p8j0dC9Nk',
-    'https://drive.google.com/uc?export=view&id=1asOW-838mgE5A4Jde1Fy4pL_SvnaTAi1',
-    'https://drive.google.com/uc?export=view&id=1gKUa9YE4_NaV4JZicNd4-GskL7rP7LgH'
+    '/IMG_8975.PNG',
+    '/IMG_9395.JPG',
+    '/IMG_9494.JPG',
+    '/New Logo MFC.PNG.png'
   ];
   
   const rightSponsors = [
-    'https://drive.google.com/uc?export=view&id=1kL8R8AqeghDB8a0K1pVpmqvfIFduhSgx',
-    'https://drive.google.com/uc?export=view&id=1mijK4hcPNl_4s2UPhAH7xyLgf4xlxwgZ',
-    'https://drive.google.com/uc?export=view&id=1phnV08PpB1B0WD38Y09KDmHDu0LqhqWx',
-    'https://drive.google.com/uc?export=view&id=1uiclAevSjsmzLbV0sZ9HHu0EwfPWtVkr'
+    '/Pocari Logo-BlueBG_180122(EN).png',
+    '/a07557e716e8cd6490bc4ff03aa9da10.jpeg',
+    '/images.png',
+    '/logojackal_01.webp'
   ];
   
   res.json({ leftSponsors, rightSponsors });

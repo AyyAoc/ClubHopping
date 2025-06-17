@@ -305,40 +305,40 @@ app.get('/api/data', (req, res) => {
 });
 
 
-// Serve static files (including images)
-app.use('/sponsor-images', express.static(path.join(__dirname)));
+// Serve static files from public directory
+app.use('/sponsor-images', express.static(path.join(__dirname, 'public')));
 
-// Create individual endpoints for each sponsor image
+// Create individual endpoints for each sponsor image from public folder
 app.get('/sponsor-image/left1', (req, res) => {
-  res.sendFile(path.join(__dirname, 'IMG_8975.PNG'));
+  res.sendFile(path.join(__dirname, 'public', 'IMG_8975.PNG'));
 });
 
 app.get('/sponsor-image/left2', (req, res) => {
-  res.sendFile(path.join(__dirname, 'IMG_9395.JPG'));
+  res.sendFile(path.join(__dirname, 'public', 'IMG_9395.JPG'));
 });
 
 app.get('/sponsor-image/left3', (req, res) => {
-  res.sendFile(path.join(__dirname, 'IMG_9494.JPG'));
+  res.sendFile(path.join(__dirname, 'public', 'IMG_9494.JPG'));
 });
 
 app.get('/sponsor-image/left4', (req, res) => {
-  res.sendFile(path.join(__dirname, 'New Logo MFC.PNG.png'));
+  res.sendFile(path.join(__dirname, 'public', 'New Logo MFC.PNG.png'));
 });
 
 app.get('/sponsor-image/right1', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Pocari Logo-BlueBG_180122(EN).png'));
+  res.sendFile(path.join(__dirname, 'public', 'Pocari Logo-BlueBG_180122(EN).png'));
 });
 
 app.get('/sponsor-image/right2', (req, res) => {
-  res.sendFile(path.join(__dirname, 'a07557e716e8cd6490bc4ff03aa9da10.jpeg'));
+  res.sendFile(path.join(__dirname, 'public', 'a07557e716e8cd6490bc4ff03aa9da10.jpeg'));
 });
 
 app.get('/sponsor-image/right3', (req, res) => {
-  res.sendFile(path.join(__dirname, 'images.png'));
+  res.sendFile(path.join(__dirname, 'public', 'images.png'));
 });
 
 app.get('/sponsor-image/right4', (req, res) => {
-  res.sendFile(path.join(__dirname, 'logojackal_01.webp'));
+  res.sendFile(path.join(__dirname, 'public', 'logojackal_01.webp'));
 });
 
 // Modified sponsors API to return URLs to the individual endpoints

@@ -305,70 +305,59 @@ app.get('/api/data', (req, res) => {
 });
 
 
+// Serve static files (including images)
+app.use('/sponsor-images', express.static(path.join(__dirname)));
+
+// Create individual endpoints for each sponsor image
+app.get('/sponsor-image/left1', (req, res) => {
+  res.sendFile(path.join(__dirname, 'IMG_8975.PNG'));
+});
+
+app.get('/sponsor-image/left2', (req, res) => {
+  res.sendFile(path.join(__dirname, 'IMG_9395.JPG'));
+});
+
+app.get('/sponsor-image/left3', (req, res) => {
+  res.sendFile(path.join(__dirname, 'IMG_9494.JPG'));
+});
+
+app.get('/sponsor-image/left4', (req, res) => {
+  res.sendFile(path.join(__dirname, 'New Logo MFC.PNG.png'));
+});
+
+app.get('/sponsor-image/right1', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Pocari Logo-BlueBG_180122(EN).png'));
+});
+
+app.get('/sponsor-image/right2', (req, res) => {
+  res.sendFile(path.join(__dirname, 'a07557e716e8cd6490bc4ff03aa9da10.jpeg'));
+});
+
+app.get('/sponsor-image/right3', (req, res) => {
+  res.sendFile(path.join(__dirname, 'images.png'));
+});
+
+app.get('/sponsor-image/right4', (req, res) => {
+  res.sendFile(path.join(__dirname, 'logojackal_01.webp'));
+});
+
+// Modified sponsors API to return URLs to the individual endpoints
 app.get('/api/sponsors', (req, res) => {
-  try {
-    const leftSponsorPaths = [
-      '/IMG_8975.PNG',
-      '/IMG_9395.JPG',
-      '/IMG_9494.JPG',
-      '/New Logo MFC.PNG.png'
-    ];
-    
-    const rightSponsorPaths = [
-      '/Pocari Logo-BlueBG_180122(EN).png',
-      '/a07557e716e8cd6490bc4ff03aa9da10.jpeg',
-      '/images.png',
-      '/logojackal_01.webp'
-    ];
-    
-    // Convert file paths to base64 encoded image data
-    const leftSponsors = leftSponsorPaths.map(imagePath => {
-      try {
-        const fullPath = path.join(__dirname, imagePath);
-        if (fs.existsSync(fullPath)) {
-          const imageData = fs.readFileSync(fullPath);
-          const base64Image = imageData.toString('base64');
-          const extension = path.extname(imagePath).toLowerCase().substring(1);
-          const mimeType = extension === 'png' ? 'image/png' : 
-                        extension === 'jpg' || extension === 'jpeg' ? 'image/jpeg' : 
-                        extension === 'webp' ? 'image/webp' : 'image/png';
-          return `data:${mimeType};base64,${base64Image}`;
-        } else {
-          console.error(`Image not found: ${fullPath}`);
-          return null;
-        }
-      } catch (err) {
-        console.error(`Error processing image ${imagePath}:`, err);
-        return null;
-      }
-    }).filter(Boolean);
-    
-    const rightSponsors = rightSponsorPaths.map(imagePath => {
-      try {
-        const fullPath = path.join(__dirname, imagePath);
-        if (fs.existsSync(fullPath)) {
-          const imageData = fs.readFileSync(fullPath);
-          const base64Image = imageData.toString('base64');
-          const extension = path.extname(imagePath).toLowerCase().substring(1);
-          const mimeType = extension === 'png' ? 'image/png' : 
-                        extension === 'jpg' || extension === 'jpeg' ? 'image/jpeg' : 
-                        extension === 'webp' ? 'image/webp' : 'image/png';
-          return `data:${mimeType};base64,${base64Image}`;
-        } else {
-          console.error(`Image not found: ${fullPath}`);
-          return null;
-        }
-      } catch (err) {
-        console.error(`Error processing image ${imagePath}:`, err);
-        return null;
-      }
-    }).filter(Boolean);
-    
-    res.json({ leftSponsors, rightSponsors });
-  } catch (error) {
-    console.error('Error in /api/sponsors endpoint:', error);
-    res.status(500).json({ error: 'Failed to process sponsor images' });
-  }
+  const leftSponsors = [
+    '/sponsor-image/left1',
+    '/sponsor-image/left2',
+    '/sponsor-image/left3',
+    '/sponsor-image/left4'
+  ];
+  
+  const rightSponsors = [
+    '/sponsor-image/right1',
+    '/sponsor-image/right2',
+    '/sponsor-image/right3',
+    '/sponsor-image/right4'
+  ];
+  
+  res.json({ leftSponsors, rightSponsors });
 });
 
 

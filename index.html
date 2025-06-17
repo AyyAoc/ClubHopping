@@ -348,10 +348,21 @@
     <div class="sponsors-header">
       <h2 class="sponsors-title">ได้รับการสนับสนุนโดย</h2>
     </div>
-    
-    <img src="../public/images.png" alt="Sponsor Logo" class="sponsor-logo">
+
     <div class="sponsors-container">
       <div class="sponsors-left" id="sponsors-left">
+        <div class="sponsor-item">
+          <img src="../public/IMG_8975.PNG" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="../public/IMG_9395.JPG" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="../public/IMG_9494.JPG" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="../public/New Logo MFC.PNG.png" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
       </div>
     </div>
     
@@ -384,6 +395,18 @@
     </div>
       
       <div class="sponsors-right" id="sponsors-right">
+        <div class="sponsor-item">
+          <img src="../public/Pocari Logo-BlueBG_180122(EN).png" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="../public/a07557e716e8cd6490bc4ff03aa9da10.jpeg" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="../public/images.png" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
+        <div class="sponsor-item">
+          <img src="../public/logojackal_01.webp" alt="Sponsor Logo" class="sponsor-logo">
+        </div>
       </div>
     </div>
   </div>
@@ -485,62 +508,6 @@
     }
 
     fetchData();
-    
-
-    function loadSponsorImages() {
-      const leftSponsorsContainer = document.getElementById('sponsors-left');
-      const rightSponsorsContainer = document.getElementById('sponsors-right');
-      
-      
-      leftSponsorsContainer.innerHTML = '';
-      rightSponsorsContainer.innerHTML = '';
-      
-     
-      const leftSponsorPaths = [
-        '/sponsor-image/left1',
-        '/sponsor-image/left2',
-        '/sponsor-image/left3',
-        '/sponsor-image/left4'
-      ];
-      
-      const rightSponsorPaths = [
-        '/sponsor-image/right1',
-        '/sponsor-image/right2',
-        '/sponsor-image/right3',
-        '/sponsor-image/right4'
-      ];
-      
-      // Populate left sponsors
-      leftSponsorPaths.forEach(imagePath => {
-        const sponsorItem = document.createElement('div');
-        sponsorItem.className = 'sponsor-item';
-        
-        const img = document.createElement('img');
-        img.src = imagePath;
-        img.alt = 'Sponsor Logo';
-        img.className = 'sponsor-logo';
-        
-        sponsorItem.appendChild(img);
-        leftSponsorsContainer.appendChild(sponsorItem);
-      });
-      
-      // Populate right sponsors
-      rightSponsorPaths.forEach(imagePath => {
-        const sponsorItem = document.createElement('div');
-        sponsorItem.className = 'sponsor-item';
-        
-        const img = document.createElement('img');
-        img.src = imagePath;
-        img.alt = 'Sponsor Logo';
-        img.className = 'sponsor-logo';
-        
-        sponsorItem.appendChild(img);
-        rightSponsorsContainer.appendChild(sponsorItem);
-      });
-    }
-    
-    // Load sponsor images when page loads
-    loadSponsorImages();
   </script>
 </body>
 </html>

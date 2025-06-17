@@ -306,30 +306,23 @@ app.get('/api/data', (req, res) => {
 
 // API endpoint to get sponsor images
 app.get('/api/sponsors', (req, res) => {
-  const publicDir = path.join(__dirname, 'public');
+  // Hardcoded sponsor images for Vercel compatibility
+  // This avoids using fs which doesn't work in Vercel serverless environment
+  const leftSponsors = [
+    '/IMG_8975.PNG',
+    '/IMG_9395.JPG',
+    '/IMG_9494.JPG',
+    '/New Logo MFC.PNG.png'
+  ];
   
-  try {
-    // Read all files in the public directory
-    const files = fs.readdirSync(publicDir);
-    
-    // Filter for image files (common image extensions)
-    const imageFiles = files.filter(file => {
-      const ext = path.extname(file).toLowerCase();
-      return ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'].includes(ext);
-    });
-    
-    // Split the images into left and right sponsors (4 for each side)
-    const leftSponsors = imageFiles.slice(0, 4).map(file => `/public/${file}`);
-    const rightSponsors = imageFiles.slice(4, 8).map(file => `/public/${file}`);
-    
-    res.json({ 
-      leftSponsors,
-      rightSponsors
-    });
-  } catch (error) {
-    console.error('Error reading sponsor images:', error);
-    res.status(500).json({ error: 'Failed to read sponsor images' });
-  }
+  const rightSponsors = [
+    '/Pocari Logo-BlueBG_180122(EN).png',
+    '/a07557e716e8cd6490bc4ff03aa9da10.jpeg',
+    '/images.png',
+    '/logojackal_01.webp'
+  ];
+  
+  res.json({ leftSponsors, rightSponsors });
 });
 
 

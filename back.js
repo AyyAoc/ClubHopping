@@ -305,10 +305,10 @@ app.get('/api/data', (req, res) => {
 });
 
 
-// Serve static files from public directory
+
 app.use('/sponsor-images', express.static(path.join(__dirname, 'public')));
 
-// Create individual endpoints for each sponsor image from public folder
+
 app.get('/sponsor-image/left1', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'IMG_8975.PNG'));
 });
@@ -341,8 +341,6 @@ app.get('/sponsor-image/right4', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'logojackal_01.webp'));
 });
 
-// We're now directly serving sponsor images through individual endpoints
-// No need for the /api/sponsors endpoint anymore
 
 
 app.post('/api/path', express.json(), (req, res) => {

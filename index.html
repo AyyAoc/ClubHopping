@@ -349,8 +349,9 @@
       <h2 class="sponsors-title">ได้รับการสนับสนุนโดย</h2>
     </div>
 
-    <div class="sponsors-container">
-      <div class="sponsors-left" id="sponsors-left">
+    <div class="sponsors-all" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+      <!-- Top row of sponsors -->
+      <div class="sponsors-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; width: 100%; margin-bottom: 1rem;">
         <div class="sponsor-item">
           <img src="../public/IMG_8975.PNG" alt="Sponsor Logo" class="sponsor-logo">
         </div>
@@ -364,37 +365,9 @@
           <img src="../public/New Logo MFC.PNG.png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
       </div>
-    </div>
-    
-    <div class="main-content-container">
-      <div class="main-content">
-        <div class="container mx-auto max-w-lg mt-2 text-center">
-          <h1 class="text-4xl font-bold mb-6">สำรวจชมรมในคณะ</h1>
-          <div class="mb-4">
-            <label class="block text-lg font-semibold text-pink-700">เลือกจุดเริ่มต้น (ชมรม):</label>
-            <select id="startClubSelect" class="w-full p-3 bg-pink-100 border border-pink-300 shadow-md shadow-pink-500/50"></select>
-          </div>
-          <div class="mb-4">
-            <label class="block text-lg font-semibold text-purple-700">เลือกจุดหมาย (ชมรม):</label>
-            <select id="endClubSelect" class="w-full p-3 bg-purple-100 border border-purple-300 shadow-md shadow-indigo-500/100"></select>
-          </div>
-          <button id="startButton" class="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3 text-lg font-bold shadow-md hover:scale-105 transition-transform" onclick="startNavigation()">
-            เริ่มนำทาง 🍭
-          </button>
-          <a href="https://docs.google.com/spreadsheets/d/1sQxwrLz00rlyefmu0FZnNhqYv0bJvrP0yUk-BcQKycU/edit?usp=sharing" target="_blank" class="w-full block mt-4 bg-gradient-to-r from-purple-500 to-pink-400 text-white py-3 text-lg font-bold rounded-lg shadow-md hover:scale-105 transition-transform flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-            </svg>
-            <span>ลำดับชมรม</span>
-          </a>
-        </div>
-      </div>
       
-      <div id="map" class="w-full h-96 mt-6 shadow-lg"></div>
-      <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
-    </div>
-      
-      <div class="sponsors-right" id="sponsors-right">
+      <!-- Bottom row of sponsors -->
+      <div class="sponsors-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; width: 100%;">
         <div class="sponsor-item">
           <img src="../public/Pocari Logo-BlueBG_180122(EN).png" alt="Sponsor Logo" class="sponsor-logo">
         </div>
@@ -408,6 +381,35 @@
           <img src="../public/logojackal_01.webp" alt="Sponsor Logo" class="sponsor-logo">
         </div>
       </div>
+    </div>
+    
+    <div class="main-content-container">
+      <!-- Club Search Section - Now appears before the map for better mobile UX -->
+      <div class="container mx-auto max-w-lg mt-2 text-center">
+        <h1 class="text-4xl font-bold mb-6">สำรวจชมรมในคณะ</h1>
+        <div class="mb-4">
+          <label class="block text-lg font-semibold text-pink-700">เลือกจุดเริ่มต้น (ชมรม):</label>
+          <select id="startClubSelect" class="w-full p-3 bg-pink-100 border border-pink-300 shadow-md shadow-pink-500/50"></select>
+        </div>
+        <div class="mb-4">
+          <label class="block text-lg font-semibold text-purple-700">เลือกจุดหมาย (ชมรม):</label>
+          <select id="endClubSelect" class="w-full p-3 bg-purple-100 border border-purple-300 shadow-md shadow-indigo-500/100"></select>
+        </div>
+        <button id="startButton" class="w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3 text-lg font-bold shadow-md hover:scale-105 transition-transform" onclick="startNavigation()">
+          เริ่มนำทาง 🍭
+        </button>
+        <a href="https://docs.google.com/spreadsheets/d/1sQxwrLz00rlyefmu0FZnNhqYv0bJvrP0yUk-BcQKycU/edit?usp=sharing" target="_blank" class="w-full block mt-4 bg-gradient-to-r from-purple-500 to-pink-400 text-white py-3 text-lg font-bold rounded-lg shadow-md hover:scale-105 transition-transform flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span>ลำดับชมรม</span>
+        </a>
+      </div>
+      
+      <!-- Map Section - Now appears after the club search for better mobile UX -->
+      <div id="map" class="w-full h-96 mt-6 shadow-lg"></div>
+      <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
+    </div>
     </div>
   </div>
   

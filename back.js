@@ -306,21 +306,69 @@ app.get('/api/data', (req, res) => {
 
 
 app.get('/api/sponsors', (req, res) => {
-  const leftSponsors = [
-    '/IMG_8975.PNG',
-    '/IMG_9395.JPG',
-    '/IMG_9494.JPG',
-    '/New Logo MFC.PNG.png'
-  ];
-  
-  const rightSponsors = [
-    '/Pocari Logo-BlueBG_180122(EN).png',
-    '/a07557e716e8cd6490bc4ff03aa9da10.jpeg',
-    '/images.png',
-    '/logojackal_01.webp'
-  ];
-  
-  res.json({ leftSponsors, rightSponsors });
+  try {
+    const leftSponsorPaths = [
+      '/IMG_8975.PNG',
+      '/IMG_9395.JPG',
+      '/IMG_9494.JPG',
+      '/New Logo MFC.PNG.png'
+    ];
+    
+    const rightSponsorPaths = [
+      '/Pocari Logo-BlueBG_180122(EN).png',
+      '/a07557e716e8cd6490bc4ff03aa9da10.jpeg',
+      '/images.png',
+      '/logojackal_01.webp'
+    ];
+    
+    // Convert file paths to base64 encoded image data
+    const leftSponsors = leftSponsorPaths.map(imagePath => {
+      try {
+        const fullPath = path.join(__dirname, imagePath);
+        if (fs.existsSync(fullPath)) {
+          const imageData = fs.readFileSync(fullPath);
+          const base64Image = imageData.toString('base64');
+          const extension = path.extname(imagePath).toLowerCase().substring(1);
+          const mimeType = extension === 'png' ? 'image/png' : 
+                        extension === 'jpg' || extension === 'jpeg' ? 'image/jpeg' : 
+                        extension === 'webp' ? 'image/webp' : 'image/png';
+          return `data:${mimeType};base64,${base64Image}`;
+        } else {
+          console.error(`Image not found: ${fullPath}`);
+          return null;
+        }
+      } catch (err) {
+        console.error(`Error processing image ${imagePath}:`, err);
+        return null;
+      }
+    }).filter(Boolean);
+    
+    const rightSponsors = rightSponsorPaths.map(imagePath => {
+      try {
+        const fullPath = path.join(__dirname, imagePath);
+        if (fs.existsSync(fullPath)) {
+          const imageData = fs.readFileSync(fullPath);
+          const base64Image = imageData.toString('base64');
+          const extension = path.extname(imagePath).toLowerCase().substring(1);
+          const mimeType = extension === 'png' ? 'image/png' : 
+                        extension === 'jpg' || extension === 'jpeg' ? 'image/jpeg' : 
+                        extension === 'webp' ? 'image/webp' : 'image/png';
+          return `data:${mimeType};base64,${base64Image}`;
+        } else {
+          console.error(`Image not found: ${fullPath}`);
+          return null;
+        }
+      } catch (err) {
+        console.error(`Error processing image ${imagePath}:`, err);
+        return null;
+      }
+    }).filter(Boolean);
+    
+    res.json({ leftSponsors, rightSponsors });
+  } catch (error) {
+    console.error('Error in /api/sponsors endpoint:', error);
+    res.status(500).json({ error: 'Failed to process sponsor images' });
+  }
 });
 
 
@@ -338,7 +386,7 @@ app.post('/api/path', express.json(), (req, res) => {
 });
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

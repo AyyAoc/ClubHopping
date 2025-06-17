@@ -353,19 +353,8 @@
     <!-- Sponsors Container with Left and Right Columns -->
     <div class="sponsors-container">
       <!-- Left Side Sponsors -->
-      <div class="sponsors-left">
-        <div class="sponsor-item">
-          <img src="https://drive.google.com/uc?export=view&id=11Y_OAqpAJA4AZqLg8cgtKc5c1gbCik_S" alt="Sponsor Logo" class="sponsor-logo">
-        </div>
-        <div class="sponsor-item">
-          <img src="https://drive.google.com/uc?export=view&id=1OOMffa2bDeChspZbOehbUT3p8j0dC9Nk" alt="Sponsor Logo" class="sponsor-logo">
-        </div>
-        <div class="sponsor-item">
-          <img src="https://drive.google.com/uc?export=view&id=1asOW-838mgE5A4Jde1Fy4pL_SvnaTAi1" alt="Sponsor Logo" class="sponsor-logo">
-        </div>
-        <div class="sponsor-item">
-          <img src="https://drive.google.com/uc?export=view&id=1gKUa9YE4_NaV4JZicNd4-GskL7rP7LgH" alt="MFC Logo" class="sponsor-logo">
-        </div>
+      <div class="sponsors-left" id="sponsors-left">
+        <!-- Sponsor images will be loaded dynamically from back.js -->
       </div>
     
     <!-- Main Content and Map Container -->
@@ -400,19 +389,8 @@
     </div>
       
       <!-- Right Side Sponsors -->
-      <div class="sponsors-right">
-        <div class="sponsor-item">
-          <img src="https://drive.google.com/uc?export=view&id=1kL8R8AqeghDB8a0K1pVpmqvfIFduhSgx" alt="Pocari Logo" class="sponsor-logo">
-        </div>
-        <div class="sponsor-item">
-          <img src="https://drive.google.com/uc?export=view&id=1mijK4hcPNl_4s2UPhAH7xyLgf4xlxwgZ" alt="Sponsor Logo" class="sponsor-logo">
-        </div>
-        <div class="sponsor-item">  
-          <img src="https://drive.google.com/uc?export=view&id=1phnV08PpB1B0WD38Y09KDmHDu0LqhqWx" alt="Sponsor Logo" class="sponsor-logo">
-        </div>
-        <div class="sponsor-item">
-          <img src="https://drive.google.com/uc?export=view&id=1uiclAevSjsmzLbV0sZ9HHu0EwfPWtVkr" alt="Jackal Logo" class="sponsor-logo">
-        </div>
+      <div class="sponsors-right" id="sponsors-right">
+        <!-- Sponsor images will be loaded dynamically from back.js -->
       </div>
     </div>
   </div>
@@ -514,6 +492,54 @@
     }
 
     fetchData();
+    
+    // Function to fetch sponsor images from backend
+    function fetchSponsorImages() {
+      fetch('/api/sponsors')
+        .then(response => response.json())
+        .then(data => {
+          const leftSponsorsContainer = document.getElementById('sponsors-left');
+          const rightSponsorsContainer = document.getElementById('sponsors-right');
+          
+          // Clear existing content
+          leftSponsorsContainer.innerHTML = '';
+          rightSponsorsContainer.innerHTML = '';
+          
+          // Populate left sponsors
+          data.leftSponsors.forEach(imagePath => {
+            const sponsorItem = document.createElement('div');
+            sponsorItem.className = 'sponsor-item';
+            
+            const img = document.createElement('img');
+            img.src = imagePath;
+            img.alt = 'Sponsor Logo';
+            img.className = 'sponsor-logo';
+            
+            sponsorItem.appendChild(img);
+            leftSponsorsContainer.appendChild(sponsorItem);
+          });
+          
+          // Populate right sponsors
+          data.rightSponsors.forEach(imagePath => {
+            const sponsorItem = document.createElement('div');
+            sponsorItem.className = 'sponsor-item';
+            
+            const img = document.createElement('img');
+            img.src = imagePath;
+            img.alt = 'Sponsor Logo';
+            img.className = 'sponsor-logo';
+            
+            sponsorItem.appendChild(img);
+            rightSponsorsContainer.appendChild(sponsorItem);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching sponsor images:', error);
+        });
+    }
+    
+    // Load sponsor images when page loads
+    fetchSponsorImages();
   </script>
 </body>
 </html>

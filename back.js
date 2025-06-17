@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const { MinPriorityQueue } = require('@datastructures-js/priority-queue');
 
@@ -301,6 +302,34 @@ app.use(express.static(path.join(__dirname)));
 
 app.get('/api/data', (req, res) => {
   res.json({ nodes, connections, clubNames, pathNames, nodeFloors });
+});
+
+// API endpoint to get sponsor images
+app.get('/api/sponsors', (req, res) => {
+  const publicDir = path.join(__dirname, 'public');
+  
+  try {
+    // Read all files in the public directory
+    const files = fs.readdirSync(publicDir);
+    
+    // Filter for image files (common image extensions)
+    const imageFiles = files.filter(file => {
+      const ext = path.extname(file).toLowerCase();
+      return ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'].includes(ext);
+    });
+    
+    // Split the images into left and right sponsors (4 for each side)
+    const leftSponsors = imageFiles.slice(0, 4).map(file => `/public/${file}`);
+    const rightSponsors = imageFiles.slice(4, 8).map(file => `/public/${file}`);
+    
+    res.json({ 
+      leftSponsors,
+      rightSponsors
+    });
+  } catch (error) {
+    console.error('Error reading sponsor images:', error);
+    res.status(500).json({ error: 'Failed to read sponsor images' });
+  }
 });
 
 

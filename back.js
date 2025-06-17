@@ -341,24 +341,8 @@ app.get('/sponsor-image/right4', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'logojackal_01.webp'));
 });
 
-// Modified sponsors API to return URLs to the individual endpoints
-app.get('/api/sponsors', (req, res) => {
-  const leftSponsors = [
-    '/sponsor-image/left1',
-    '/sponsor-image/left2',
-    '/sponsor-image/left3',
-    '/sponsor-image/left4'
-  ];
-  
-  const rightSponsors = [
-    '/sponsor-image/right1',
-    '/sponsor-image/right2',
-    '/sponsor-image/right3',
-    '/sponsor-image/right4'
-  ];
-  
-  res.json({ leftSponsors, rightSponsors });
-});
+// We're now directly serving sponsor images through individual endpoints
+// No need for the /api/sponsors endpoint anymore
 
 
 app.post('/api/path', express.json(), (req, res) => {

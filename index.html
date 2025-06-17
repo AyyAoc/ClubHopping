@@ -493,53 +493,61 @@
 
     fetchData();
     
-    // Function to fetch sponsor images from backend
-    function fetchSponsorImages() {
-      fetch('/api/sponsors')
-        .then(response => response.json())
-        .then(data => {
-          const leftSponsorsContainer = document.getElementById('sponsors-left');
-          const rightSponsorsContainer = document.getElementById('sponsors-right');
-          
-          // Clear existing content
-          leftSponsorsContainer.innerHTML = '';
-          rightSponsorsContainer.innerHTML = '';
-          
-          // Populate left sponsors
-          data.leftSponsors.forEach(imagePath => {
-            const sponsorItem = document.createElement('div');
-            sponsorItem.className = 'sponsor-item';
-            
-            const img = document.createElement('img');
-            img.src = imagePath;
-            img.alt = 'Sponsor Logo';
-            img.className = 'sponsor-logo';
-            
-            sponsorItem.appendChild(img);
-            leftSponsorsContainer.appendChild(sponsorItem);
-          });
-          
-          // Populate right sponsors
-          data.rightSponsors.forEach(imagePath => {
-            const sponsorItem = document.createElement('div');
-            sponsorItem.className = 'sponsor-item';
-            
-            const img = document.createElement('img');
-            img.src = imagePath;
-            img.alt = 'Sponsor Logo';
-            img.className = 'sponsor-logo';
-            
-            sponsorItem.appendChild(img);
-            rightSponsorsContainer.appendChild(sponsorItem);
-          });
-        })
-        .catch(error => {
-          console.error('Error fetching sponsor images:', error);
-        });
+    // Function to load sponsor images directly from endpoints
+    function loadSponsorImages() {
+      const leftSponsorsContainer = document.getElementById('sponsors-left');
+      const rightSponsorsContainer = document.getElementById('sponsors-right');
+      
+      // Clear existing content
+      leftSponsorsContainer.innerHTML = '';
+      rightSponsorsContainer.innerHTML = '';
+      
+      // Define direct image endpoint paths
+      const leftSponsorPaths = [
+        '/sponsor-image/left1',
+        '/sponsor-image/left2',
+        '/sponsor-image/left3',
+        '/sponsor-image/left4'
+      ];
+      
+      const rightSponsorPaths = [
+        '/sponsor-image/right1',
+        '/sponsor-image/right2',
+        '/sponsor-image/right3',
+        '/sponsor-image/right4'
+      ];
+      
+      // Populate left sponsors
+      leftSponsorPaths.forEach(imagePath => {
+        const sponsorItem = document.createElement('div');
+        sponsorItem.className = 'sponsor-item';
+        
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.alt = 'Sponsor Logo';
+        img.className = 'sponsor-logo';
+        
+        sponsorItem.appendChild(img);
+        leftSponsorsContainer.appendChild(sponsorItem);
+      });
+      
+      // Populate right sponsors
+      rightSponsorPaths.forEach(imagePath => {
+        const sponsorItem = document.createElement('div');
+        sponsorItem.className = 'sponsor-item';
+        
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.alt = 'Sponsor Logo';
+        img.className = 'sponsor-logo';
+        
+        sponsorItem.appendChild(img);
+        rightSponsorsContainer.appendChild(sponsorItem);
+      });
     }
     
     // Load sponsor images when page loads
-    fetchSponsorImages();
+    loadSponsorImages();
   </script>
 </body>
 </html>

@@ -408,7 +408,8 @@
       
       <!-- Map Section - Now appears after the club search for better mobile UX -->
       <div id="map" class="w-full h-96 mt-6 shadow-lg"></div>
-      <div id="pathImages" class="w-full mt-6 flex flex-wrap gap-2 justify-center"></div>
+      <!-- Image display container removed but kept as empty div for compatibility -->
+      <div id="pathImages" class="hidden"></div>
     </div>
     </div>
   </div>
@@ -451,16 +452,10 @@
     }
 
     function displayPathImages(path) {
+      // Function kept for compatibility but image display functionality removed
       let pathImagesDiv = document.getElementById("pathImages");
       pathImagesDiv.innerHTML = "";
-      for (let i = 0; i < path.length - 1; i++) {
-        let imgPath = `images/${path[i]}_${path[i+1]}.jpg`;
-        let imgElement = document.createElement("img");
-        imgElement.src = imgPath;
-        imgElement.alt = `เส้นทางจาก ${path[i]} ไป ${path[i+1]}`;
-        imgElement.className = "w-32 h-20 object-cover rounded-lg shadow-md";
-        pathImagesDiv.appendChild(imgElement);
-      }
+      // Images are no longer displayed
     }
 
     async function startNavigation() {
